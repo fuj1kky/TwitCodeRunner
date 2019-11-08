@@ -1,10 +1,15 @@
 require_relative '../Privatekey/oauth_twitter'
+require_relative 'sourcejoin'
 require 'json'
 require 'oauth'
+
+# reg1 = /^@(.*) twitcoderunner (.*)\.(.*) (.*)/
 
 def get_tweet
 
   id_array = []
+
+  reg1 = /twitcoderunner (.*)\.(.*)/
 
   consumer = OAuth::Consumer.new(
     @client.consumer_key,
@@ -33,11 +38,14 @@ def get_tweet
   #   puts "---------------------------------------------"
   # end
 
-  @client.user_timeline(screen_name: "_fuyok", count: 1).each do |tweet|
-    p tweet.text
-    @source = tweet.text
-    #responce = endpoint.get("https://api.twitter.com/1.1/statuses/show/#{tweet.id.to_s}.json")
-    #result = JSON.pretty_generate(JSON.parse(responce.body))
-    #puts result
+  #debug
+  @client.user_timeline(screen_name: "_fuyok", count: 5).each do |tweet|
+    #puts tweet.text
+    if reg1 =~ tweet.text
+      responce = endpoint.get("https://api.twitter.com/1.1/statuses/show/#{tweet.id.to_s}.json")
+      result = JSON.parse(responce.body)
+      finid = result["id_str"]
+      @source = sourcejoinfirst(finid)
+    end
   end
 end
