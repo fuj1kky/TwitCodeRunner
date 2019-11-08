@@ -5,8 +5,8 @@ require 'net/http'
 
 get_tweet
 
-SOURCE = @source #test code
-
+SOURCE = @source
+puts @source
 uri = URI.parse('http://api.paiza.io/runners/create')
 param = {
   language: :ruby,
