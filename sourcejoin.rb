@@ -5,15 +5,22 @@ require 'oauth'
 
 def sourcejoinfirst(tweet_id)
   info = show(tweet_id)
+  # puts info["id_str"]
+  # puts info["text"]
+  # puts info["in_reply_to_status_id_str"].class
   if info["in_reply_to_status_id_str"].class == String
-    finalinfo = show(info["in_reply_to_status_id_str"])
-    source2 = finalinfo["text"]
-    if finalinfo["in_reply_to_status_id_str"].class == String
-      sourcejoin(source2, finalinfo["id_str"])
+    final_info = show(info["in_reply_to_status_id_str"])
+    source2 = final_info["text"]
+    if final_info["in_reply_to_status_id_str"].class == String
+      sourcejoin(source2, final_info["id_str"])
+    else
+      return source2
     end
+  else
+    puts "実行できるファイルがありません"
+    return "error[NO TEXT]"
   end
 end
-
 
 def sourcejoin(text, id_str)
   source = text

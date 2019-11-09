@@ -1,30 +1,42 @@
 require_relative '../Privatekey/oauth_twitter'
 require_relative 'gettweet'
+require_relative 'runner'
 require 'json'
 require 'net/http'
 
-get_tweet
+consumer = OAuth::Consumer.new(
+  @client.consumer_key,
+  @client.consumer_secret,
+)
+endpoint = OAuth::AccessToken.new(consumer, @client.access_token, @client.access_token_secret)
 
-SOURCE = @source
-puts @source
-uri = URI.parse('http://api.paiza.io/runners/create')
-param = {
-  language: :ruby,
-  source_code: SOURCE,
-  api_key: :guest
-}
-#------------------create code------------------
-responce = Net::HTTP.post_form(uri, param)
-create_result = JSON.parse(responce.body)
-cid = create_result["id"]
+filter_option = get_tweet_ids
 
-sleep(2)
+reg1 = /twitcoderunner (.*)\.(.*)/
 
-#------------------show details------------------
-uri2 = URI.parse("http://api.paiza.io/runners/get_details?id=#{cid}&api_key=guest")
-responce = Net::HTTP.get_response(uri2)
-details_result = JSON.parse(responce.body)
-details_result_p = JSON.pretty_generate(JSON.parse(responce.body))
-puts details_result_p
+@client_s.filter(filter_option) do |object|
+  puts object.text
+  if reg1 =~ object.text
+    responce = endpoint.get("https://api.twitter.com/1.1/statuses/show/#{object.id.to_s}.json")
+    result = JSON.parse(responce.body)
+    finid = result["id_str"]
+    source = sourcejoinfirst(finid)
+    runner(source)
+  end
+  puts "---------------------------------------------"
+end
 
-@client.update details_result["stdout"]
+# debug
+# @client.user_timeline(screen_name: "_fuyok", count: 5).each do |tweet|
+#   #puts tweet.text
+#   if reg1 =~ tweet.text
+#     puts tweet.text
+#     responce = endpoint.get("https://api.twitter.com/1.1/statuses/show/#{tweet.id.to_s}.json")
+#     result = JSON.parse(responce.body)
+#     finid = result["id_str"]
+#     puts finid
+#     source = sourcejoinfirst(finid)
+#     puts source
+#     runner(source)
+#   end
+# end

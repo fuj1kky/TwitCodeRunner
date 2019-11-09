@@ -5,7 +5,7 @@ require 'oauth'
 
 # reg1 = /^@(.*) twitcoderunner (.*)\.(.*) (.*)/
 
-def get_tweet
+def get_tweet_ids
 
   id_array = []
 
@@ -17,7 +17,6 @@ def get_tweet
   )
 
   uri_ids = "https://api.twitter.com/1.1/followers/ids.json?screen_name=_fuyok&stringify_ids=true"
-  #uri_shows = "https://api.twitter.com/1.1/statuses/show/#{tweet_id.to_s}.json"
 
   endpoint = OAuth::AccessToken.new(consumer, @client.access_token, @client.access_token_secret)
   responce = endpoint.get(uri_ids)
@@ -31,21 +30,18 @@ def get_tweet
 
   options = {
     #follow: followids
+    follow: 706760422456569856
    }
 
-  # @client_s.filter(options) do |object|
-  #   puts object.id
-  #   puts "---------------------------------------------"
-  # end
+ end
 
   #debug
-  @client.user_timeline(screen_name: "_fuyok", count: 5).each do |tweet|
-    #puts tweet.text
-    if reg1 =~ tweet.text
-      responce = endpoint.get("https://api.twitter.com/1.1/statuses/show/#{tweet.id.to_s}.json")
-      result = JSON.parse(responce.body)
-      finid = result["id_str"]
-      @source = sourcejoinfirst(finid)
-    end
-  end
-end
+  # @client.user_timeline(screen_name: "_fuyok", count: 5).each do |tweet|
+  #   #puts tweet.text
+  #   if reg1 =~ tweet.text
+  #     responce = endpoint.get("https://api.twitter.com/1.1/statuses/show/#{tweet.id.to_s}.json")
+  #     result = JSON.parse(responce.body)
+  #     finid = result["id_str"]
+  #     @source = sourcejoinfirst(finid)
+  #   end
+  # end
