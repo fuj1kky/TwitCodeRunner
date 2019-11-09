@@ -3,13 +3,10 @@ require_relative 'sourcejoin'
 require 'json'
 require 'oauth'
 
-# reg1 = /^@(.*) twitcoderunner (.*)\.(.*) (.*)/
-
 def get_tweet_ids
 
   id_array = []
 
-  reg1 = /twitcoderunner (.*)\.(.*)/
 
   consumer = OAuth::Consumer.new(
     @client.consumer_key,
@@ -30,7 +27,7 @@ def get_tweet_ids
 
   options = {
     #follow: followids
-    follow: 706760422456569856
+    track: "twitcoderunner"
    }
 
  end
