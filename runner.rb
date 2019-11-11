@@ -4,7 +4,7 @@ require_relative 'apifunc'
 require 'json'
 require 'net/http'
 
-def runner(source,language)
+def runner(source,language, screen_name)
   if source == "error[NO TEXT]"
     return 0
   else
@@ -14,7 +14,6 @@ def runner(source,language)
       source_code: source,
       api_key: :guest
     }
-
     #------------------create code------------------
     responce = Net::HTTP.post_form(uri, param)
     create_result = JSON.parse(responce.body)
@@ -25,6 +24,7 @@ def runner(source,language)
     uri2 = URI.parse("http://api.paiza.io/runners/get_details?id=#{cid}&api_key=guest")
     responce = Net::HTTP.get_response(uri2)
     details_result = JSON.parse(responce.body)
-    @client.update details_result["stdout"]
+    text = "@#{screen_name}\n" + details_result["stdout"]
+    @client.update text
   end
 end

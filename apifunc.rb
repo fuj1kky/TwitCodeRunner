@@ -43,6 +43,3 @@ def charrefconversion(text)
   #result = text.gsub(/&.*;/,conversion)
   result = text.gsub(/&lt;/,"<").gsub(/&gt;/,">").gsub(/&amp;/,"&")
 end
-
-# text = "#include &lt;stdio.h&gt;"
-# puts charrefconversion(text)

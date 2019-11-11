@@ -22,14 +22,15 @@ reg1 = /twitcoderunner (.*)\.(.*)/
     responce = endpoint.get("https://api.twitter.com/1.1/statuses/show/#{object.id.to_s}.json")
     result = JSON.parse(responce.body)
     finid = result["id_str"]
+    name = result["in_reply_to_screen_name"]
     sourcetext = sourcejoinfirst(finid)
     source = charrefconversion(sourcetext)
-    runner(source, lang)
+    runner(source, lang, name)
   end
   puts "---------------------------------------------"
 end
 
-# # debug
+# debug
 # @client.user_timeline(screen_name: "fuyok_", count: 5).each do |tweet|
 #   #puts tweet.text
 #   if reg1 =~ tweet.text
@@ -42,5 +43,9 @@ end
 #     puts finid
 #     source = sourcejoinfirst(finid)
 #     puts source
-#     runner(source,language)
+#     name = result["in_reply_to_screen_name"]
+#     puts name
+#     puts
+#     #runner(source,language,name)
 #   end
+# end
