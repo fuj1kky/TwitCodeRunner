@@ -22,7 +22,8 @@ reg1 = /twitcoderunner (.*)\.(.*)/
     responce = endpoint.get("https://api.twitter.com/1.1/statuses/show/#{object.id.to_s}.json")
     result = JSON.parse(responce.body)
     finid = result["id_str"]
-    source = sourcejoinfirst(finid)
+    sourcetext = sourcejoinfirst(finid)
+    source = charrefconversion(sourcetext)
     runner(source, lang)
   end
   puts "---------------------------------------------"

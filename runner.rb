@@ -25,7 +25,6 @@ def runner(source,language)
     uri2 = URI.parse("http://api.paiza.io/runners/get_details?id=#{cid}&api_key=guest")
     responce = Net::HTTP.get_response(uri2)
     details_result = JSON.parse(responce.body)
-    details_result_p = JSON.pretty_generate(JSON.parse(responce.body))
     @client.update details_result["stdout"]
   end
 end
