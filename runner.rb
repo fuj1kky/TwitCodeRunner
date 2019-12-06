@@ -1,12 +1,13 @@
 require_relative '../Privatekey/oauth_twitter'
-require_relative 'gettweet'
 require_relative 'apifunc'
 require 'json'
 require 'net/http'
 
-def runner(source,language, screen_name)
+def runner(source,language,screen_name)
   if source == "error[NO TEXT]"
-    return 0
+    puts "実行できるファイルがありません"
+  elsif language == "none"
+    puts "拡張子に対応した言語がありません"
   else
     uri = URI.parse('http://api.paiza.io/runners/create')
     param = {
@@ -33,6 +34,9 @@ def runner(source,language, screen_name)
       text = "@#{screen_name}\n" + details_result["build_stderr"]
     else
       text = "@#{screen_name}\n" + "何らかのエラーが発生しました。"
+    end
+    if text.length > 140
+      text = text[0...138] + "..."
     end
     @client.update text
   end

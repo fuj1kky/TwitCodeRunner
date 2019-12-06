@@ -1,7 +1,7 @@
 require_relative '../Privatekey/oauth_twitter'
-require_relative 'gettweet'
 require_relative 'runner'
 require_relative 'apifunc'
+require_relative 'sourcejoin'
 require 'json'
 require 'net/http'
 
@@ -11,9 +11,11 @@ consumer = OAuth::Consumer.new(
 )
 endpoint = OAuth::AccessToken.new(consumer, @client.access_token, @client.access_token_secret)
 
-filter_option = get_tweet_ids
+filter_option = {
+  track: "twitcoderunner"
+ }
 
-reg1 = /twitcoderunner (.*)\.(.*)/
+reg1 = /\Atwitcoderunner (.*)\.(.*)\Z/
 
 @client_s.filter(filter_option) do |object|
   puts object.text
